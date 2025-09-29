@@ -19,6 +19,7 @@ import cl.unab.agendaapp.util.GeneradorId
 
 class MainActivity : AppCompatActivity() {
 
+    // Uso de 'lateinit' para una variable mutable no nula, inicializada más tarde (en onCreate).
     private lateinit var binding: ActivityMainBinding
     private val eventoAdapter = EventoAdapter(::onEventoClick)
     private var criterioOrden: String = "default"
@@ -85,6 +86,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun configurarRecyclerView(){
+        // Uso de 'with' para llamadas al mismo objeto.
         with(binding.rvEventos) {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = eventoAdapter

@@ -24,6 +24,7 @@ class DetalleEventoActivity : AppCompatActivity() {
     }
 
     private fun cargarDetalleEvento(id: String?) {
+        // Uso de 'let' para ejecutar el bloque SOLO si 'id' no es nulo.
         id?.let {
             EventoRepository.obtenerEventoId(it)?.let {
                 binding.apply {

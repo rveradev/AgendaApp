@@ -6,6 +6,8 @@ import java.util.Locale
 
 object EventoRepository {
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+    // Muestra el uso de estructura de datos List
     private var eventos: MutableList<Evento> = mutableListOf(
         Evento(
             GeneradorId.obtenerId(),
@@ -48,6 +50,7 @@ object EventoRepository {
     }
 
     fun obtenerEventos(sortBy: String): List<Evento> {
+        // Muestra el uso de 'sortedBy' con una función lambda.
         return when (sortBy) {
             "titulo" -> eventos.sortedWith(compareBy { it.titulo })
             "fecha" -> eventos.sortedBy { dateFormat.parse(it.fecha) }
