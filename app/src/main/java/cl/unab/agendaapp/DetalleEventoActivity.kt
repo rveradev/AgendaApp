@@ -16,7 +16,6 @@ class DetalleEventoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityDetalleEventoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
