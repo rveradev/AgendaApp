@@ -2,6 +2,9 @@ package cl.unab.agendaapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -18,14 +21,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val eventoAdapter = EventoAdapter(::onEventoClick)
+    private var criterioOrden: String = "default"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         configurarRecyclerView()
+
+        configuracionSpinnerOrdenar()
 
         binding.btnAgregarEvento.setOnClickListener {
             startActivity(Intent(this, AgregarEventoActivity::class.java))
@@ -34,9 +39,49 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        var eventos = EventoRepository.obtenerEventos()
+        cargarEventos(criterioOrden)
+    }
 
-        eventoAdapter.actualizarLista(eventos)
+    private fun configuracionSpinnerOrdenar(){
+        val opciones = arrayOf("Default", "Titulo", "Fecha")
+
+        val spinnerAdapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            opciones
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerOrdenar.adapter = this
+        }
+
+        binding.spinnerOrdenar.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+                val selectedOption = opciones[position]
+                val nuevoCriterio = when (selectedOption) {
+                    "Título" -> "titulo"
+                    "Fecha" -> "fecha"
+                    else -> "default"
+                }
+
+                if (nuevoCriterio != criterioOrden) {
+                    criterioOrden = nuevoCriterio
+                    cargarEventos(criterioOrden)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+
+    }
+
+    private fun cargarEventos(sortBy: String){
+        val eventos = EventoRepository.obtenerEventos(sortBy)
+        eventos.let {
+            eventoAdapter.actualizarLista(eventos)
+        }
     }
 
     private fun configurarRecyclerView(){
