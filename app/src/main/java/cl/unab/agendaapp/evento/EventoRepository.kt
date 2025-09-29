@@ -1,8 +1,11 @@
 package cl.unab.agendaapp.evento
 
 import cl.unab.agendaapp.util.GeneradorId
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 object EventoRepository {
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     private var eventos: MutableList<Evento> = mutableListOf(
         Evento(
             GeneradorId.obtenerId(),
@@ -21,7 +24,19 @@ object EventoRepository {
             "Ejemplo tercer evento",
             "12/01/2025",
             null
-        )
+        ),
+        Evento(
+            GeneradorId.obtenerId(),
+            "A",
+            "10/10/2000",
+            "A"
+        ),
+        Evento(
+            GeneradorId.obtenerId(),
+            "Z",
+            "10/07/2014",
+            null
+        ),
     )
 
     fun agregarEvento(evento: Evento) {
@@ -32,7 +47,11 @@ object EventoRepository {
         return eventos.find { it.id == id }
     }
 
-    fun obtenerEventos(): List<Evento> {
-        return eventos.toList()
+    fun obtenerEventos(sortBy: String): List<Evento> {
+        return when (sortBy) {
+            "titulo" -> eventos.sortedWith(compareBy { it.titulo })
+            "fecha" -> eventos.sortedBy { dateFormat.parse(it.fecha) }
+            else -> eventos
+        }
     }
 }
