@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AgendaApp">
         <activity
+            android:name=".AgregarEventoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetalleEventoActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
