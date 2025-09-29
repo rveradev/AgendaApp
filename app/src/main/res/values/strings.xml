@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AgendaApp</string>
+    <string name="add_content">Agregar nuevo evento</string>
 </resources>
